@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String?
+  projects  Project[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  thumbnail   String?
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  videos      Video[]
+  status      String   @default("draft")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Video {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  filename    String
+  filepath    String
+  filetype    String   @default("video/mp4")
+  filesize    Int
+  duration    Int?
+  thumbnail   String?
+  
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id])
+  
+  // AI Processing fields - using String instead of Json for SQLite
+  status              String   @default("pending")
+  transcript          String?
+  aiScript            String?
+  captions            String?
+  cuts                String?  // Stored as JSON string
+  voiceover           String?
+  zoomPoints          String?  // Stored as JSON string
+  
+  processingProgress  Int      @default(0)
+  errorMessage        String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  processedAt DateTime?
+}

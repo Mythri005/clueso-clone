@@ -1,0 +1,32 @@
+# Virtual Environments
+venv/
+env/
+ENV/
+.vscode/
+.idea/
+*.pyc
+__pycache__/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backups
+*.bak
+*.backup
